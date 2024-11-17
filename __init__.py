@@ -1,0 +1,84 @@
+bl_info = {
+    "name": "ShotDial",
+    "author": "Joseph Hansen",
+    "version": (1, 3, 63),
+    "blender": (3, 60, 13),
+    "location": "",
+    "warning": "",
+    "wiki_url": "",
+    "tracker_url": "https://github.com/josephclaytonhansen/blender-addons",
+    "category": "3D View"
+}
+
+import bpy
+from bpy.props import StringProperty, FloatVectorProperty, CollectionProperty, BoolProperty
+from bpy.app.handlers import persistent
+from .panel import SHOTDIAL_PT_ShotPanel
+from .spin_operators import OBJECT_OT_Spin, OBJECT_OT_DeSpin
+from .rename_shot import SHOTDIAL_OT_RenameShot
+from .remove_shot import SHOTDIAL_OT_RemoveShot
+from .append_node_group import append_node_group
+from .new_shot import SHOTDIAL_OT_NewShot
+from .set_active import SHOTDIAL_OT_SetActiveCamera
+from .add_image_plane import SHOTDIAL_OT_AddImagePlane
+
+def update_shot_name(self, context):
+    shot = bpy.context.scene.shotdial_shots.get(self.name)
+    if shot:
+        shot.name = self.name
+
+def update_shot_color(self, context):
+    shot = bpy.context.scene.shotdial_shots.get(self.name)
+    mat = bpy.data.materials.get("ShotCheck")
+    try:
+        shot.color = self.color
+        mat.diffuse_color = (*self.color, 1.0)
+        bpy.data.grease_pencils["Annotations"].layers[shot.name].color = shot.color
+    except Exception as e:
+        print(f"Failed to update shot color: {e}")
+
+class ShotData(bpy.types.PropertyGroup):
+    name: StringProperty(name="Name", default="Shot", update=update_shot_name)
+    color: FloatVectorProperty(name="Color", subtype='COLOR', min=0, max=1, default=(1.0, 1.0, 1.0), update=update_shot_color)
+    camera: bpy.props.PointerProperty(type=bpy.types.Object)
+
+camera_index = 0
+addon_keymaps = []
+shotdial_node_group = None
+
+@persistent
+def load_handler(dummy):
+    append_node_group()
+    try:
+        bpy.ops.gpencil.annotation_add()
+    except Exception as e:
+        print(f"Failed to add annotation layer: {e}")
+
+classes = [
+    ShotData,
+    SHOTDIAL_OT_NewShot,
+    SHOTDIAL_PT_ShotPanel,
+    SHOTDIAL_OT_SetActiveCamera,
+    OBJECT_OT_Spin,
+    OBJECT_OT_DeSpin,
+    SHOTDIAL_OT_RenameShot,
+    SHOTDIAL_OT_RemoveShot,
+    SHOTDIAL_OT_AddImagePlane
+]
+
+def register():
+    for cls in classes:
+        bpy.utils.register_class(cls)
+    bpy.types.Scene.shotdial_shots = CollectionProperty(type=ShotData)
+    bpy.app.handlers.load_post.append(load_handler)
+
+
+def unregister():
+    for cls in classes:
+        bpy.utils.unregister_class(cls)
+    del bpy.types.Scene.shotdial_shots
+    bpy.app.handlers.load_post.remove(load_handler)
+
+
+if __name__ == "__main__":
+    register()
