@@ -1,7 +1,7 @@
 bl_info = {
     "name": "ShotDial",
     "author": "Joseph Hansen",
-    "version": (1, 3, 63),
+    "version": (1, 3, 64),
     "blender": (3, 60, 13),
     "location": "",
     "warning": "",
@@ -26,6 +26,16 @@ def update_shot_name(self, context):
     shot = bpy.context.scene.shotdial_shots.get(self.name)
     if shot:
         shot.name = self.name
+        
+def update_scene_number(self, context):
+    shot = bpy.context.scene.shotdial_shots.get(self.name)
+    if shot:
+        shot.sceneNumber = self.sceneNumber
+        
+def update_shot_time(self, context):
+    shot = bpy.context.scene.shotdial_shots.get(self.name)
+    if shot:
+        shot.time = self.time
 
 def update_shot_color(self, context):
     shot = bpy.context.scene.shotdial_shots.get(self.name)
@@ -36,11 +46,13 @@ def update_shot_color(self, context):
         bpy.data.grease_pencils["Annotations"].layers[shot.name].color = shot.color
     except Exception as e:
         print(f"Failed to update shot color: {e}")
-
+        
 class ShotData(bpy.types.PropertyGroup):
     name: StringProperty(name="Name", default="Shot", update=update_shot_name)
     color: FloatVectorProperty(name="Color", subtype='COLOR', min=0, max=1, default=(1.0, 1.0, 1.0), update=update_shot_color)
     camera: bpy.props.PointerProperty(type=bpy.types.Object)
+    time: bpy.props.EnumProperty(name="Time", items=[("DAY", "Day", ""), ("NIGHT", "Night", ""), ("DUSK", "Dusk", ""), ("DAWN", "Dawn", ""), ("MORNING", "Morning", ""), ("AFTERNOON", "Afternoon", "")], default="DAY", update=update_shot_time)
+    sceneNumber: bpy.props.IntProperty(name="Scene Number", default=0, update=update_scene_number)
 
 camera_index = 0
 addon_keymaps = []
