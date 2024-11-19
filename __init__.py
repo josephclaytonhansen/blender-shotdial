@@ -1,7 +1,7 @@
 bl_info = {
     "name": "ShotDial",
     "author": "Joseph Hansen",
-    "version": (1, 3, 64),
+    "version": (1, 3, 65),
     "blender": (3, 60, 13),
     "location": "",
     "warning": "",
@@ -51,8 +51,8 @@ class ShotData(bpy.types.PropertyGroup):
     name: StringProperty(name="Name", default="Shot", update=update_shot_name)
     color: FloatVectorProperty(name="Color", subtype='COLOR', min=0, max=1, default=(1.0, 1.0, 1.0), update=update_shot_color)
     camera: bpy.props.PointerProperty(type=bpy.types.Object)
-    time: bpy.props.EnumProperty(name="Time", items=[("DAY", "Day", ""), ("NIGHT", "Night", ""), ("DUSK", "Dusk", ""), ("DAWN", "Dawn", ""), ("MORNING", "Morning", ""), ("AFTERNOON", "Afternoon", "")], default="DAY", update=update_shot_time)
-    sceneNumber: bpy.props.IntProperty(name="Scene Number", default=0, update=update_scene_number)
+    time: bpy.props.EnumProperty(name="Time", items=[("DAY", "Day", ""), ("NIGHT", "Night", ""), ("DUSK", "Dusk", ""), ("DAWN", "Dawn", ""), ("MORNING", "Morning", ""), ("AFTERNOON", "Afternoon", ""), ("NOON", "Noon", ""), ("GOLDEN_HOUR", "Golden Hour", ""), ("MIDNIGHT", "Midnight", ""), ("BLUE_HOUR", "Blue Hour", ""), ("TWILIGHT", "Twilight", ""), ("SUNSET", "Sunset", ""), ("SUNRISE", "Sunrise", ""), ("EVENING", "Evening", ""), ("MIDNIGHT", "Midnight", "")], default="DAY", update=update_shot_time)
+    sceneNumber: bpy.props.IntProperty(name="Scene #", default=0, update=update_scene_number, min=0)
 
 camera_index = 0
 addon_keymaps = []
