@@ -39,7 +39,7 @@ class SHOTDIAL_PT_ShotPanel(bpy.types.Panel):
             row = box.row()
             row.prop(shot, "notes", text="Notes")
             row = box.row()
-            row.prop(shot.camera, "data.lens", text="Focal Length")
+            row.prop(shot.camera.data, "lens", text="Focal Length")
             row = box.row()
             split = row.split(factor=0.8)
             col = split.column()
@@ -47,7 +47,6 @@ class SHOTDIAL_PT_ShotPanel(bpy.types.Panel):
             op.shot_name = shot.name
             col = split.column()
             col.operator("shotdial.remove_shot", text="", icon='TRASH').shot_name = shot.name
-            box.separator()
             row = box.row()
             row.operator("shotdial.add_image_plane", text="Add Plane").shot_name = shot.name
             
