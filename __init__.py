@@ -47,12 +47,18 @@ def update_shot_color(self, context):
     except Exception as e:
         print(f"Failed to update shot color: {e}")
         
+def update_shot_notes(self, context):
+    shot = bpy.context.scene.shotdial_shots.get(self.name)
+    if shot:
+        shot.notes = self.notes
+        
 class ShotData(bpy.types.PropertyGroup):
     name: StringProperty(name="Name", default="Shot", update=update_shot_name)
     color: FloatVectorProperty(name="Color", subtype='COLOR', min=0, max=1, default=(1.0, 1.0, 1.0), update=update_shot_color)
     camera: bpy.props.PointerProperty(type=bpy.types.Object)
     time: bpy.props.EnumProperty(name="Time", items=[("DAY", "Day", ""), ("NIGHT", "Night", ""), ("DUSK", "Dusk", ""), ("DAWN", "Dawn", ""), ("MORNING", "Morning", ""), ("AFTERNOON", "Afternoon", ""), ("NOON", "Noon", ""), ("GOLDEN_HOUR", "Golden Hour", ""), ("MIDNIGHT", "Midnight", ""), ("SUNSET", "Sunset", ""), ("SUNRISE", "Sunrise", ""), ("EVENING", "Evening", ""), ("MIDNIGHT", "Midnight", "")], default="DAY", update=update_shot_time)
     sceneNumber: bpy.props.IntProperty(name="Scene #", default=0, update=update_scene_number, min=0)
+    notes: bpy.props.StringProperty(name="Notes", default="", update=update_shot_notes)
 
 camera_index = 0
 addon_keymaps = []
