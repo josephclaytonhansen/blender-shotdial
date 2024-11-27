@@ -1,7 +1,7 @@
 bl_info = {
     "name": "ShotDial",
     "author": "Joseph Hansen",
-    "version": (1, 3, 67),
+    "version": (1, 3, 69),
     "blender": (3, 60, 13),
     "location": "",
     "warning": "",
