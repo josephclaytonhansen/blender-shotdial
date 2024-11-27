@@ -10,6 +10,22 @@ class SHOTDIAL_OT_SetActiveCamera(bpy.types.Operator):
 
     def execute(self, context):
         shot = next((s for s in context.scene.shotdial_shots if s.name == self.shot_name), None)
+        if shot.notes == "":
+            bpy.data.scenes["Scene"].render.stamp_note_text = shot.name + " - " + shot.backgroundMotion + " - " + shot.scene_number
+        else:
+            bpy.data.scenes["Scene"].render.stamp_note_text = shot.name + " - " + shot.backgroundMotion + " - " + shot.scene_number + " (" + shot.notes + ")"
+            
+        bpy.data.scenes["Scene"].render.use_stamp_camera = True
+        bpy.data.scenes["Scene"].render.use_stamp = True
+        bpy.data.scenes["Scene"].render.use_stamp_filename = True
+        bpy.data.scenes["Scene"].render.use_stamp_frame = True
+        bpy.data.scenes["Scene"].render.use_stamp_frame_range = True
+        bpy.data.scenes["Scene"].render.use_stamp_note = True
+        bpy.data.scenes["Scene"].render.use_stamp_scene = False
+        bpy.data.scenes["Scene"].render.use_stamp_date = False
+        bpy.data.scenes["Scene"].render.use_stamp_time = False
+        
+        
         if shot:
             shot_check_mat = bpy.data.materials.get("ShotCheck")
             shot_check_mat.diffuse_color = (*shot.color, 1.0)

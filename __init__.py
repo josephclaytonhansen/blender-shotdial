@@ -1,7 +1,7 @@
 bl_info = {
     "name": "ShotDial",
     "author": "Joseph Hansen",
-    "version": (1, 3, 65),
+    "version": (1, 3, 67),
     "blender": (3, 60, 13),
     "location": "",
     "warning": "",
@@ -52,6 +52,11 @@ def update_shot_notes(self, context):
     if shot:
         shot.notes = self.notes
         
+def update_shot_motion(self, context):
+    shot = bpy.context.scene.shotdial_shots.get(self.name)
+    if shot:
+        shot.backgroundMotion = self.backgroundMotion
+        
 class ShotData(bpy.types.PropertyGroup):
     name: StringProperty(name="Name", default="Shot", update=update_shot_name)
     color: FloatVectorProperty(name="Color", subtype='COLOR', min=0, max=1, default=(1.0, 1.0, 1.0), update=update_shot_color)
@@ -59,6 +64,7 @@ class ShotData(bpy.types.PropertyGroup):
     time: bpy.props.EnumProperty(name="Time", items=[("DAY", "Day", ""), ("NIGHT", "Night", ""), ("DUSK", "Dusk", ""), ("DAWN", "Dawn", ""), ("MORNING", "Morning", ""), ("AFTERNOON", "Afternoon", ""), ("NOON", "Noon", ""), ("GOLDEN_HOUR", "Golden Hour", ""), ("MIDNIGHT", "Midnight", ""), ("SUNSET", "Sunset", ""), ("SUNRISE", "Sunrise", ""), ("EVENING", "Evening", ""), ("MIDNIGHT", "Midnight", "")], default="DAY", update=update_shot_time)
     sceneNumber: bpy.props.IntProperty(name="Scene #", default=0, update=update_scene_number, min=0)
     notes: bpy.props.StringProperty(name="Notes", default="", update=update_shot_notes)
+    backgroundMotion: bpy.props.EnumProperty(name="Background Motion", items=[("STATIC", "Static", ""), ("TRACKING", "Tracking", ""), ("SHAKE", "Shake", ""), ("PAN_LEFT", "Pan Left", ""), ("PAN_RIGHT", "Pan Right", ""), ("PAN_UP", "Pan Up", ""), ("PAN_DOWN", "Pan Down", ""), ("ZOOM_IN", "Zoom In", ""), ("ZOOM_OUT", "Zoom Out", ""), ("DOLLY_IN", "Dolly In", ""), ("DOLLY_OUT", "Dolly Out", ""),  ("TILT_UP", "Tilt Up", ""), ("TILT_DOWN", "Tilt Down", ""), ("ROLL_LEFT", "Roll Left", ""), ("ROLL_RIGHT", "Roll Right", "")], default="STATIC", update=update_shot_motion)
 
 camera_index = 0
 addon_keymaps = []

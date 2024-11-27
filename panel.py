@@ -1,19 +1,4 @@
 import bpy
-
-def update_shot_name(self, context):
-    shot = bpy.context.scene.shotdial_shots.get(self.name)
-    if shot:
-        shot.name = self.name
-        
-def update_shot_color(self, context):
-    shot = bpy.context.scene.shotdial_shots.get(self.name)
-    mat = bpy.data.materials.get("ShotCheck")
-    try:
-        shot.color = self.color
-        mat.diffuse_color = (*self.color, 1.0)
-        bpy.data.grease_pencils["Annotations"].layers[shot.name].color = shot.color
-    except Exception as e:
-        print(f"Failed to update shot color: {e}")
         
 class SHOTDIAL_PT_ShotPanel(bpy.types.Panel):
     bl_label = "ShotDial Panel"
@@ -37,9 +22,10 @@ class SHOTDIAL_PT_ShotPanel(bpy.types.Panel):
             row.prop(shot, "sceneNumber", text="Scene Number")
             row.prop(shot, "time", text="Time")
             row = box.row()
+            row.prop(shot, "backgroundMotion", text="Motion")
             row.prop(shot, "notes", text="Notes")
             row = box.row()
-            row.prop(shot.camera.data, "lens", text="Focal Length")
+            row.prop(shot.camera.data, "lens", text="Focal Length")            
             row = box.row()
             split = row.split(factor=0.8)
             col = split.column()
