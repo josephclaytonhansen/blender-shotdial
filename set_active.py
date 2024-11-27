@@ -15,7 +15,8 @@ class SHOTDIAL_OT_SetActiveCamera(bpy.types.Operator):
         else:
             bpy.data.scenes["Scene"].render.stamp_note_text = shot.name + " - " + shot.backgroundMotion + " - " + shot.time+ " - " + str(shot.sceneNumber) + " (" + shot.notes + ")"
             
-        bpy.data.scenes["Scene"].render.use_stamp_camera = True
+        bpy.data.scenes["Scene"].render.use_stamp_camera = False
+        bpy.data.scenes["Scene"].render.use_stamp_render_time = False
         bpy.data.scenes["Scene"].render.use_stamp = True
         bpy.data.scenes["Scene"].render.use_stamp_filename = False
         bpy.data.scenes["Scene"].render.use_stamp_frame = False
