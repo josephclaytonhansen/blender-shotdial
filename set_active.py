@@ -11,15 +11,15 @@ class SHOTDIAL_OT_SetActiveCamera(bpy.types.Operator):
     def execute(self, context):
         shot = next((s for s in context.scene.shotdial_shots if s.name == self.shot_name), None)
         if shot.notes == "":
-            bpy.data.scenes["Scene"].render.stamp_note_text = shot.name + " - " + shot.backgroundMotion + " - " + str(shot.sceneNumber)
+            bpy.data.scenes["Scene"].render.stamp_note_text = shot.name + " - " + shot.backgroundMotion + " - " + shot.time+ " - " + str(shot.sceneNumber)
         else:
-            bpy.data.scenes["Scene"].render.stamp_note_text = shot.name + " - " + shot.backgroundMotion + " - " + str(shot.sceneNumber) + " (" + shot.notes + ")"
+            bpy.data.scenes["Scene"].render.stamp_note_text = shot.name + " - " + shot.backgroundMotion + " - " + shot.time+ " - " + str(shot.sceneNumber) + " (" + shot.notes + ")"
             
         bpy.data.scenes["Scene"].render.use_stamp_camera = True
         bpy.data.scenes["Scene"].render.use_stamp = True
-        bpy.data.scenes["Scene"].render.use_stamp_filename = True
-        bpy.data.scenes["Scene"].render.use_stamp_frame = True
-        bpy.data.scenes["Scene"].render.use_stamp_frame_range = True
+        bpy.data.scenes["Scene"].render.use_stamp_filename = False
+        bpy.data.scenes["Scene"].render.use_stamp_frame = False
+        bpy.data.scenes["Scene"].render.use_stamp_frame_range = False
         bpy.data.scenes["Scene"].render.use_stamp_note = True
         bpy.data.scenes["Scene"].render.use_stamp_scene = False
         bpy.data.scenes["Scene"].render.use_stamp_date = False
